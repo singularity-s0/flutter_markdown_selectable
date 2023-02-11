@@ -712,9 +712,10 @@ class MarkdownBuilder implements md.NodeVisitor {
           textAlign: textAlign,
         ));
       } else if (mergedTexts.isNotEmpty &&
-          mergedTexts.last is Text &&
-          child is Text) {
-        final Text previous = mergedTexts.removeLast() as Text;
+          mergedTexts.last is SelectableText &&
+          child is SelectableText) {
+        final SelectableText previous =
+            mergedTexts.removeLast() as SelectableText;
         final TextSpan previousTextSpan = previous.textSpan!;
         final List<TextSpan> children = previousTextSpan.children != null
             ? List<TextSpan>.from(previousTextSpan.children!)
@@ -842,12 +843,14 @@ class MarkdownBuilder implements md.NodeVisitor {
     //Adding a unique key prevents the problem of using the same link handler for text spans with the same text
     final Key k = key == null ? UniqueKey() : Key(key);
     if (selectable) {
-      return Text.rich(
-        text!,
-        textScaleFactor: styleSheet.textScaleFactor,
-        textAlign: textAlign ?? TextAlign.start,
+      return GestureDetector(
         onTap: onTapText,
-        key: k,
+        child: Text.rich(
+          text!,
+          textScaleFactor: styleSheet.textScaleFactor,
+          textAlign: textAlign ?? TextAlign.start,
+          key: k,
+        ),
       );
     } else {
       return RichText(
