@@ -82,7 +82,7 @@ class SubscriptBuilder extends MarkdownElementBuilder {
     for (int i = 0; i < textContent.length; i++) {
       text += _subscripts[int.parse(textContent[i])];
     }
-    return SelectableText.rich(TextSpan(text: text));
+    return Text.rich(TextSpan(text: text));
   }
 }
 ```
@@ -155,7 +155,7 @@ class SubscriptBuilder extends MarkdownElementBuilder {
     for (int i = 0; i < textContent.length; i++) {
       text += _subscripts[int.parse(textContent[i])];
     }
-    return SelectableText.rich(TextSpan(text: text));
+    return Text.rich(TextSpan(text: text));
   }
 }
 
