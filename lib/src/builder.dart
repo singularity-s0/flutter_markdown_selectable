@@ -94,7 +94,7 @@ class MarkdownBuilder implements md.NodeVisitor {
   /// Creates an object that builds a [Widget] tree from parsed Markdown.
   MarkdownBuilder({
     required this.delegate,
-    required this.selectable,
+    required this.selectionColor,
     required this.styleSheet,
     required this.imageDirectory,
     required this.imageBuilder,
@@ -111,10 +111,8 @@ class MarkdownBuilder implements md.NodeVisitor {
   /// A delegate that controls how link and `pre` elements behave.
   final MarkdownBuilderDelegate delegate;
 
-  /// If true, the text is selectable.
-  ///
-  /// Defaults to false.
-  final bool selectable;
+  /// Text selection color
+  final Color? selectionColor;
 
   /// Defines which [TextStyle] objects to use for each type of element.
   final MarkdownStyleSheet styleSheet;
@@ -147,7 +145,7 @@ class MarkdownBuilder implements md.NodeVisitor {
   /// does not allow for intrinsic height measurements.
   final MarkdownListItemCrossAxisAlignment listItemCrossAxisAlignment;
 
-  /// Default tap handler used when [selectable] is set to true
+  /// Default tap handler used when [selectionColor] is set to true
   final VoidCallback? onTapText;
 
   /// The soft line break is used to identify the spaces at the end of aline of
@@ -842,24 +840,16 @@ class MarkdownBuilder implements md.NodeVisitor {
   Widget _buildRichText(TextSpan? text, {TextAlign? textAlign, String? key}) {
     //Adding a unique key prevents the problem of using the same link handler for text spans with the same text
     final Key k = key == null ? UniqueKey() : Key(key);
-    if (selectable) {
-      return GestureDetector(
-        onTap: onTapText,
-        child: Text.rich(
-          text!,
-          textScaleFactor: styleSheet.textScaleFactor,
-          textAlign: textAlign ?? TextAlign.start,
-          key: k,
-        ),
-      );
-    } else {
-      return Text.rich(
+    return GestureDetector(
+      onTap: onTapText,
+      child: Text.rich(
         text!,
-        textScaleFactor: styleSheet.textScaleFactor!,
+        textScaleFactor: styleSheet.textScaleFactor,
         textAlign: textAlign ?? TextAlign.start,
         key: k,
-      );
-    }
+        selectionColor: selectionColor,
+      ),
+    );
   }
 
   /// This allows a value of type T or T? to be treated as a value of type T?.

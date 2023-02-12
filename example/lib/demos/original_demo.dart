@@ -171,7 +171,7 @@ class OriginalMarkdownDemo extends StatelessWidget
       body: SafeArea(
         child: Markdown(
           controller: controller,
-          selectable: true,
+          selectionColor: Colors.red,
           data: _markdownData,
           imageDirectory: 'https://raw.githubusercontent.com',
         ),

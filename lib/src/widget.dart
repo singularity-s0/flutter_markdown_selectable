@@ -149,7 +149,7 @@ abstract class MarkdownWidget extends StatefulWidget {
   const MarkdownWidget({
     Key? key,
     required this.data,
-    this.selectable = false,
+    this.selectionColor,
     this.styleSheet,
     this.styleSheetTheme = MarkdownStyleSheetBaseTheme.material,
     this.syntaxHighlighter,
@@ -173,10 +173,8 @@ abstract class MarkdownWidget extends StatefulWidget {
   /// The Markdown to display.
   final String data;
 
-  /// If true, the text is selectable.
-  ///
-  /// Defaults to false.
-  final bool selectable;
+  /// Selection color for the text
+  final Color? selectionColor;
 
   /// The styles to use when displaying the Markdown.
   ///
@@ -196,7 +194,7 @@ abstract class MarkdownWidget extends StatefulWidget {
   /// Called when the user taps a link.
   final MarkdownTapLinkCallback? onTapLink;
 
-  /// Default tap handler used when [selectable] is set to true
+  /// Default tap handler used when [selectionColor] is set to true
   final VoidCallback? onTapText;
 
   /// The base directory holding images referenced by Img tags with local or network file paths.
@@ -323,7 +321,7 @@ class _MarkdownWidgetState extends State<MarkdownWidget>
     // create a widget tree based on the elements.
     final MarkdownBuilder builder = MarkdownBuilder(
       delegate: this,
-      selectable: widget.selectable,
+      selectionColor: widget.selectionColor,
       styleSheet: styleSheet,
       imageDirectory: widget.imageDirectory,
       imageBuilder: widget.imageBuilder,
@@ -391,7 +389,7 @@ class MarkdownBody extends MarkdownWidget {
   const MarkdownBody({
     Key? key,
     required String data,
-    bool selectable = false,
+    Color? selectionColor,
     MarkdownStyleSheet? styleSheet,
     MarkdownStyleSheetBaseTheme? styleSheetTheme,
     SyntaxHighlighter? syntaxHighlighter,
@@ -416,7 +414,7 @@ class MarkdownBody extends MarkdownWidget {
   }) : super(
           key: key,
           data: data,
-          selectable: selectable,
+          selectionColor: selectionColor,
           styleSheet: styleSheet,
           styleSheetTheme: styleSheetTheme,
           syntaxHighlighter: syntaxHighlighter,
@@ -469,7 +467,7 @@ class Markdown extends MarkdownWidget {
   const Markdown({
     Key? key,
     required String data,
-    bool selectable = false,
+    Color? selectionColor,
     MarkdownStyleSheet? styleSheet,
     MarkdownStyleSheetBaseTheme? styleSheetTheme,
     SyntaxHighlighter? syntaxHighlighter,
@@ -496,7 +494,7 @@ class Markdown extends MarkdownWidget {
   }) : super(
           key: key,
           data: data,
-          selectable: selectable,
+          selectionColor: selectionColor,
           styleSheet: styleSheet,
           styleSheetTheme: styleSheetTheme,
           syntaxHighlighter: syntaxHighlighter,
