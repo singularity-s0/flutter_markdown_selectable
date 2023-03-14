@@ -104,7 +104,6 @@ class MarkdownBuilder implements md.NodeVisitor {
     required this.paddingBuilders,
     required this.listItemCrossAxisAlignment,
     this.fitContent = false,
-    this.onTapText,
     this.softLineBreak = false,
   });
 
@@ -144,9 +143,6 @@ class MarkdownBuilder implements md.NodeVisitor {
   /// Defaults to [MarkdownListItemCrossAxisAlignment.baseline], which
   /// does not allow for intrinsic height measurements.
   final MarkdownListItemCrossAxisAlignment listItemCrossAxisAlignment;
-
-  /// Default tap handler used when [selectionColor] is set to true
-  final VoidCallback? onTapText;
 
   /// The soft line break is used to identify the spaces at the end of aline of
   /// text and the leading spaces in the immediately following the line of text.
@@ -691,11 +687,9 @@ class MarkdownBuilder implements md.NodeVisitor {
   ) {
     final List<Widget> mergedTexts = <Widget>[];
     for (final Widget child in children) {
-      if (mergedTexts.isNotEmpty &&
-          mergedTexts.last is RichText &&
-          child is RichText) {
-        final RichText previous = mergedTexts.removeLast() as RichText;
-        final TextSpan previousTextSpan = previous.text as TextSpan;
+      if (mergedTexts.isNotEmpty && mergedTexts.last is Text && child is Text) {
+        final Text previous = mergedTexts.removeLast() as Text;
+        final TextSpan previousTextSpan = previous.textSpan as TextSpan;
         final List<TextSpan> children = previousTextSpan.children != null
             ? previousTextSpan.children!
                 .map((InlineSpan span) => span is! TextSpan
@@ -703,7 +697,7 @@ class MarkdownBuilder implements md.NodeVisitor {
                     : span)
                 .toList()
             : <TextSpan>[previousTextSpan];
-        children.add(child.text as TextSpan);
+        children.add(child.textSpan as TextSpan);
         final TextSpan? mergedSpan = _mergeSimilarTextSpans(children);
         mergedTexts.add(_buildRichText(
           mergedSpan,
@@ -840,15 +834,12 @@ class MarkdownBuilder implements md.NodeVisitor {
   Widget _buildRichText(TextSpan? text, {TextAlign? textAlign, String? key}) {
     //Adding a unique key prevents the problem of using the same link handler for text spans with the same text
     final Key k = key == null ? UniqueKey() : Key(key);
-    return GestureDetector(
-      onTap: onTapText,
-      child: Text.rich(
-        text!,
-        textScaleFactor: styleSheet.textScaleFactor,
-        textAlign: textAlign ?? TextAlign.start,
-        key: k,
-        selectionColor: selectionColor,
-      ),
+    return Text.rich(
+      text!,
+      textScaleFactor: styleSheet.textScaleFactor,
+      textAlign: textAlign ?? TextAlign.start,
+      key: k,
+      selectionColor: selectionColor,
     );
   }
 

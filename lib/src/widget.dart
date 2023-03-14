@@ -154,7 +154,6 @@ abstract class MarkdownWidget extends StatefulWidget {
     this.styleSheetTheme = MarkdownStyleSheetBaseTheme.material,
     this.syntaxHighlighter,
     this.onTapLink,
-    this.onTapText,
     this.imageDirectory,
     this.blockSyntaxes,
     this.inlineSyntaxes,
@@ -193,9 +192,6 @@ abstract class MarkdownWidget extends StatefulWidget {
 
   /// Called when the user taps a link.
   final MarkdownTapLinkCallback? onTapLink;
-
-  /// Default tap handler used when [selectionColor] is set to true
-  final VoidCallback? onTapText;
 
   /// The base directory holding images referenced by Img tags with local or network file paths.
   final String? imageDirectory;
@@ -331,7 +327,6 @@ class _MarkdownWidgetState extends State<MarkdownWidget>
       paddingBuilders: widget.paddingBuilders,
       fitContent: widget.fitContent,
       listItemCrossAxisAlignment: widget.listItemCrossAxisAlignment,
-      onTapText: widget.onTapText,
       softLineBreak: widget.softLineBreak,
     );
 
@@ -394,7 +389,6 @@ class MarkdownBody extends MarkdownWidget {
     MarkdownStyleSheetBaseTheme? styleSheetTheme,
     SyntaxHighlighter? syntaxHighlighter,
     MarkdownTapLinkCallback? onTapLink,
-    VoidCallback? onTapText,
     String? imageDirectory,
     List<md.BlockSyntax>? blockSyntaxes,
     List<md.InlineSyntax>? inlineSyntaxes,
@@ -419,7 +413,6 @@ class MarkdownBody extends MarkdownWidget {
           styleSheetTheme: styleSheetTheme,
           syntaxHighlighter: syntaxHighlighter,
           onTapLink: onTapLink,
-          onTapText: onTapText,
           imageDirectory: imageDirectory,
           blockSyntaxes: blockSyntaxes,
           inlineSyntaxes: inlineSyntaxes,
@@ -472,7 +465,6 @@ class Markdown extends MarkdownWidget {
     MarkdownStyleSheetBaseTheme? styleSheetTheme,
     SyntaxHighlighter? syntaxHighlighter,
     MarkdownTapLinkCallback? onTapLink,
-    VoidCallback? onTapText,
     String? imageDirectory,
     List<md.BlockSyntax>? blockSyntaxes,
     List<md.InlineSyntax>? inlineSyntaxes,
@@ -499,7 +491,6 @@ class Markdown extends MarkdownWidget {
           styleSheetTheme: styleSheetTheme,
           syntaxHighlighter: syntaxHighlighter,
           onTapLink: onTapLink,
-          onTapText: onTapText,
           imageDirectory: imageDirectory,
           blockSyntaxes: blockSyntaxes,
           inlineSyntaxes: inlineSyntaxes,
