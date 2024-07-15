@@ -450,6 +450,37 @@ class MarkdownBuilder implements md.NodeVisitor {
         if (child != null) {
           current.children[0] = child;
         }
+      } else if (tag == 'mark') {
+        // Only support Text.rich Widget for now
+        if (current.children.length == 1 && current.children.first is Text) {
+          final Text child = current.children.first as Text;
+          final TextSpan childTextSpan = child.textSpan! as TextSpan;
+          final TextSpan markedChildTextSpan = TextSpan(
+            text: childTextSpan.text,
+            style: childTextSpan.style?.copyWith(backgroundColor: Colors.yellow),
+          );
+          // If the element before it is a text Widget, merge them
+          if (parent.children.isNotEmpty && parent.children.last is Text) {
+            // Remove previous Text Widget
+            final Text previousText = parent.children.removeLast() as Text;
+            final TextSpan previousTextSpan = previousText.textSpan! as TextSpan;
+            // If previous widget contains a `text` field, convert it into a TextSpan
+            final TextSpan firstTextSpan = TextSpan(
+                text: previousTextSpan.text,
+                style: previousTextSpan.style
+            );
+            final TextSpan combinedTextSpan = TextSpan(
+              children: [
+                if (previousTextSpan.text != null) firstTextSpan,
+                if (previousTextSpan.children != null) ...previousTextSpan.children!,
+                markedChildTextSpan],
+            );
+            current.children[0] = Text.rich(combinedTextSpan);
+          } else {
+            // No merge, add child only
+            current.children[0] = Text.rich(markedChildTextSpan);
+          }
+        }
       } else if (tag == 'img') {
         // create an image widget for this image
         current.children.add(_buildPadding(
